@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-mysql-k8s
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring-mysql-k8s
+  template:
+    metadata:
+      labels:
+        app: spring-mysql-k8s
+    spec:
+      containers:
+      - name: spring-mysql-k8s
+        image: spring-mysql-k8s:v1
+        ports:
+        - containerPort: 8081
+        envFrom:
+          - name: MYSQL_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: host
+          - name: MYSQL_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: mysql-config
+                key: name
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mysql-credentials
+                key: password
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-mysql-k8s
+  labels:
+    name: spring-mysql-k8s
+spec:
+  selector:
+    app: spring-mysql-k8s
+  type: NodePort
+  ports:
+    - nodePort: 30163
+      port: 8081        
+      targetPort: 8081
+      protocol: TCP
+      
+      

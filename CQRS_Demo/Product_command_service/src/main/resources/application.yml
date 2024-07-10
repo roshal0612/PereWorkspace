@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: Product_command_service
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${MYSQL_HOST}/${MYSQL_DATABASE}?useSSL=false
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}   
+  
+  jpa:
+   hibernate:
+     ddl-auto: update
+   properties:
+     hibernate:
+       dialect: org.hibernate.dialect.MySQLDialect
+       
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+     
+server:
+  port: 9191

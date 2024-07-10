@@ -1,0 +1,101 @@
+
+---
+#Mysql PV
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-command-pv
+  labels:
+    app: mysql-command
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: "/mnt/data/mysql-command" 
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/hostname
+            operator: In
+            values:
+              - minikube 
+              
+---
+#Mysql PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-command-pvc
+  labels:
+    app: mysql-command
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+      
+---
+#Mysql Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-command
+  labels:
+    app: mysql-command
+spec:
+  selector:
+    matchLabels:
+      app: mysql-command
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mysql-command
+    spec:
+      containers:
+        - name: mysql-command-container
+          image: mysql:5.7
+          env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: pereroot
+          - name: MYSQL_DATABASE
+            value: command_db
+          - name: MYSQL_USER
+            value: admin
+          - name: MYSQL_PASSWORD
+            value: admin@123
+          ports:
+          - containerPort: 3308
+          volumeMounts:
+          - name: mysql-command-persistent-storage
+            mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-command-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-command-pvc
+            
+---
+
+#Mysql Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-command
+  labels:
+    app: mysql-command
+spec:
+  selector:
+    app: mysql-command
+  clusterIP: None
+  ports:
+    - protocol: TCP
+      port: 3308
+      targetPort: 3308
+      
