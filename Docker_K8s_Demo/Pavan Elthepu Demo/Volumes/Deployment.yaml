@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo
+  annotations:
+    kubernetes.io/change-cause: "Updating to alpine version"
+  labels:
+    app: mongo
+spec:
+  replicas: 4 
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      name: mongo
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo
+        args: ["--dbpath", "/data/db"]
+        env:
+          - name: MONGO_INITDB_ROOT_USERNAME
+            value: "admin"
+          - name: MONGO_INITDB_ROOT_PASSWORD
+            value: "password"
+        volumeMounts:
+          - mountPath: /data/db
+            name: mongo-volume
+      volumes:
+        - name: mongo-volume
+          # emptyDir: {}
+          # hostPath:
+          #   path: /data
+          persistentVolumeClaim:
+            claimName: mongo-pvc
