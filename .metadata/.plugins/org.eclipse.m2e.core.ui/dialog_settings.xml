@@ -69,6 +69,7 @@
 	</section>
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
+			<item value="C:\Users\Perennial\pere-workspace\CQRS_Demo"/>
 			<item value="C:\Users\Perennial\eclipse-workspace\Product_command_service"/>
 		</list>
 		<list key="projectNameTemplate">

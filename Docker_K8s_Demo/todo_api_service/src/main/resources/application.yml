@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: todo_api_service
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+        
+server.port: 8081 
