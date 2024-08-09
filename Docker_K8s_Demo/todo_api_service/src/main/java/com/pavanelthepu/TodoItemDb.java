@@ -6,6 +6,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.springframework.stereotype.Component;
 
+import com.pavanelthepu.data.TodoRepository;
+import com.pavanelthepu.entity.TodoItem;
+
 @Component
 public class TodoItemDb implements TodoRepository {
 
@@ -25,4 +28,12 @@ public class TodoItemDb implements TodoRepository {
 		return item;
 	}
 
+	@Override
+	public long countByCompleted(boolean status) {
+		long count = todoList.stream()
+			.filter(todo -> todo.isStatus())
+			.count();
+		return count;
+	}
+	
 }

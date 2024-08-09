@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: todo-api
-        image: pererosh/todo-api:v1
+        image: pererosh/todo-api:v2
         ports:
         - containerPort: 8081
 

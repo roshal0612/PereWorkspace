@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: MathService
+  datasource:
+    url: jdbc:mysql://localhost:3306/division
+    username: root
+    password: Pere@718
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate: 
+      ddl-auto: update

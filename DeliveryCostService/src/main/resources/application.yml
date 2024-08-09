@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: DeliveryCostService
+    
+# swagger-ui custom path
+#springdoc:
+#  swagger-ui:
+#    path: /swagger-ui.html
+
+# Pricing rules configuration
+parcel:
+  reject:
+    weight: 50.0    # Reject if weight exceeds 50kg
+  heavy:
+    weight: 10.0    # Heavy parcel if weight exceeds 10kg
+    cost: 20        # Cost per kg for heavy parcels
+  small:
+    volume: 1500.0  # Small parcel if volume is less than 1500 cm3
+    cost: 0.03      # Cost per cm3 for small parcels
+  medium: 
+    volume: 2500.0  # Medium parcel if volume is less than 2500 cm3
+    cost: 0.04      # Cost per cm3 for medium parcels
+  large:
+    cost: 0.05      # Cost per cm3 for large parcels
+
+# Voucher service configuration
+voucher:
+  api:
+    url: "https://mynt-exam.mocklab.io/voucher/{voucherCode}?key={apiKey}"  # URL template for voucher service
+    key: "apikey"  # API key for accessing voucher service
+    
+
+    
